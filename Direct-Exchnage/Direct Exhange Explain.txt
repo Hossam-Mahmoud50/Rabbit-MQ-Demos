@@ -1,0 +1,19 @@
+مفهوم Direct Exchange في RabbitMQ
+Direct Exchange هو نوع من الـ Exchange في RabbitMQ يُستخدم لتوجيه الرسائل إلى الـ Queues بناءً على routing key محددة. في RabbitMQ، يتم استخدام الـ Exchange لتوزيع الرسائل على الـ Queues المختلفة بناءً على بعض القواعد المحددة.
+
+1. كيفية عمل Direct Exchange:
+عندما يُرسل المنتج (Producer) رسالة إلى Direct Exchange، يجب أن تحتوي الرسالة على routing key.
+يقوم الـ Direct Exchange بمطابقة الـ routing key للرسالة مع binding key المرتبطة بـ Queues معينة.
+إذا تطابقت الـ routing key للرسالة مع binding key للـ Queue، سيتم توجيه الرسالة إلى تلك الـ Queue.
+في حال عدم وجود تطابق بين routing key وbinding key، لن يتم توجيه الرسالة إلى أي Queue.
+2. مثال على Direct Exchange:
+افترض أن لدينا Direct Exchange يسمى "logs_direct" وثلاث Queues مرتبطة به كما يلي:
+
+Queue 1 (errorQueue) مع binding key = "error".
+Queue 2 (infoQueue) مع binding key = "info".
+Queue 3 (warningQueue) مع binding key = "warning".
+في هذا السيناريو:
+
+إذا أرسل المنتج رسالة بـ routing key = "error"، فسيتم توجيه الرسالة إلى Queue 1.
+إذا كانت routing key = "info"، فسيتم توجيه الرسالة إلى Queue 2.
+وإذا كانت routing key = "warning"، فسيتم توجيه الرسالة إلى Queue 3.

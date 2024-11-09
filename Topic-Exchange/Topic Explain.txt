@@ -1,0 +1,21 @@
+﻿مفهوم Topic Exchange في RabbitMQ
+Topic Exchange هو نوع من الـ Exchange في RabbitMQ يستخدم للتوجيه المتقدم للرسائل بناءً على أنماط الـ routing key. يختلف عن الأنواع الأخرى مثل Fanout Exchange أو Direct Exchange حيث يسمح باستخدام wildcards في الـ routing key (مثل * و #) لتحديد القواعد بشكل أكثر مرونة.
+
+1. كيفية عمل Topic Exchange:
+عندما يُرسل المنتج (Producer) رسالة إلى Topic Exchange، يُرفق بـ routing key الذي يمكن أن يحتوي على عدة أجزاء.
+الـ Topic Exchange يربط الـ Queue مع binding key يمكن أن يحتوي على wildcards.
+يتم إرسال الرسالة إلى الـ Queue إذا كان الـ routing key الخاص بالرسالة يتطابق مع الـ binding key للـ Queue باستخدام قواعد wildcards.
+2. أنواع Wildcards في Topic Exchange:
+* (نجم): يمثل جزءًا واحدًا من الـ routing key. على سبيل المثال، إذا كانت الـ routing key هي animal.rabbit و binding key هي animal.*، سيتم تطابق الرسالة.
+# (علامة الهاش): تمثل أي عدد من الأجزاء، بما في ذلك صفر. على سبيل المثال، إذا كانت الـ routing key هي animal.rabbit.ears و binding key هي animal.#، سيتم تطابق الرسالة أيضًا.
+3. مثال على Topic Exchange:
+افترض أن لدينا Topic Exchange يسمى "logs_topic" وثلاث Queues مرتبطة به كما يلي:
+
+Queue 1 مع binding key = "animal.rabbit".
+Queue 2 مع binding key = "animal.*".
+Queue 3 مع binding key = "animal.#".
+في هذا السيناريو:
+
+إذا أرسل المنتج رسالة بـ routing key = "animal.rabbit"، فسيتم توجيه الرسالة إلى Queue 1 فقط.
+إذا كانت routing key = "animal.dog"، فسيتم توجيه الرسالة إلى Queue 2 فقط.
+إذا كانت routing key = "animal.rabbit.ears"، فسيتم توجيه الرسالة إلى Queue 3 لأن الـ binding key يحتوي على # الذي يطابق أي عدد من الأجزاء.

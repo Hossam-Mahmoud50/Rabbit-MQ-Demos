@@ -1,0 +1,16 @@
+مفهوم Fanout Exchange في RabbitMQ
+Fanout Exchange هو نوع من أنواع الـ Exchange في RabbitMQ، ويُستخدم لنشر الرسائل إلى جميع الـ Queues المتصلة به بدون النظر إلى الـ routing key الخاصة بالرسالة. ببساطة، يتم إرسال الرسالة إلى كل Queue مربوطة بهذا الـ Exchange، مما يجعله مفيدًا في حالات البث الجماعي (Broadcasting).
+
+1. كيفية عمل Fanout Exchange:
+عند إرسال المنتج (Producer) رسالة إلى Fanout Exchange، يقوم الـ Exchange بإرسال الرسالة إلى كل Queue مرتبطة به بغض النظر عن routing key.
+لا يتم استخدام الـ routing key في هذا النوع من الـ Exchange، لذا فإن جميع الـ Queues المرتبطة ستستلم الرسالة.
+يُعتبر Fanout Exchange مثاليًا لحالات مثل نشر الإشعارات لجميع المستهلكين أو بث الرسائل في نظام.
+2. مثال على Fanout Exchange:
+افترض أن لدينا Fanout Exchange يسمى "logs_fanout" ولدينا ثلاث Queues مرتبطة به:
+
+Queue 1 (queueA)
+Queue 2 (queueB)
+Queue 3 (queueC)
+في هذا السيناريو:
+
+عندما يرسل المنتج رسالة إلى الـ Exchange، سيتم توجيه الرسالة إلى Queue 1 وQueue 2 وQueue 3 في نفس الوقت، بغض النظر عن محتوى الرسالة
